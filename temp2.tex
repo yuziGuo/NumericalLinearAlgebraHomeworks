@@ -1,0 +1,20 @@
+\section{[YH]LASSO By ADMM}
+
+Given $x \in \mathbb{R}^{n}, \Psi \in \mathbb{R}^{n \times p}$, recall the lasso problem:
+$$
+\min _{\alpha} \frac{1}{2}\|x-\Psi \alpha\|_{2}^{2}+\gamma\|\alpha\|_{1}
+$$
+
+
+
+We can rewrite this as:
+$$
+\min _{\alpha, y} \frac{1}{2}\|x-\Psi \alpha\|_{2}^{2}+\gamma\|y\|_{1} \text { subject to } \alpha-y=0
+$$
+
+\begin{align}
+    &\alpha^{(k)}=\left(\Psi^{T} \Psi+\rho I\right)^{-1}\left(\Psi^{T} x+\rho\left(y^{(k-1)}-z^{(k-1)}\right)\right) \\
+    &y^{(k)}=S_{\gamma / \rho}\left(\alpha^{(k)}+z^{(k-1)}\right) \\
+    &z^{(k)}=z^{(k-1)}+\alpha^{(k)}-y^{(k)}
+\end{align}
+

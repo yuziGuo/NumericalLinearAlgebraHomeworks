@@ -1,0 +1,23 @@
+\section{LASSO By ADMM}
+
+Given $y \in \mathbb{R}^{n}, X \in \mathbb{R}^{n \times p}$, recall the lasso problem:
+$$
+\min _{\beta} \frac{1}{2}\|y-X \beta\|_{2}^{2}+\lambda\|\beta\|_{1}
+$$
+
+
+$$
+\min _{\beta} \frac{1}{2}\|y-X \beta\|_{2}^{2}+\lambda\|\beta\|_{1}
+$$
+
+We can rewrite this as:
+$$
+\min _{\beta, \alpha} \frac{1}{2}\|y-X \beta\|_{2}^{2}+\lambda\|\alpha\|_{1} \text { subject to } \beta-\alpha=0
+$$
+
+\begin{align}
+    &\beta^{(k)}=\left(X^{T} X+\rho I\right)^{-1}\left(X^{T} y+\rho\left(\alpha^{(k-1)}-w^{(k-1)}\right)\right) \\
+    &\alpha^{(k)}=S_{\lambda / \rho}\left(\beta^{(k)}+w^{(k-1)}\right) \\
+    &w^{(k)}=w^{(k-1)}+\beta^{(k)}-\alpha^{(k)}
+\end{align}
+

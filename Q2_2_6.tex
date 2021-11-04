@@ -1,0 +1,72 @@
+\section*{Question 2}
+\textcolor{blue}{[Rank-one perturbation of the identity]}
+2.6. If $u$ and $v$ are m-vectors, 
+the matrix $A = I + uv*$ is known as a rank-one perturbation of the identity. 
+\begin{itemize}
+    \item Show that if $A$ is nonsingular, then its inverse has the form $A^{-1} = I + auv*$ for some scalar $a$, and give an expression for $a$.
+    \item For what $u$ and $v$ is $A$ singular? If it is singular, what is $null (A)$?
+\end{itemize}
+
+
+
+\subsection*{The first part of proof}
+Suppose that $A$ is non-singular, 
+let $B = I + auv^*$, we will prove that for any $A$,
+we can find a corresponding $a$, and thus a corresponding $B$,
+so that $B = A^{-1}$.
+
+If $AB = I$, we get:
+\begin{align*}
+    AB = I &\rightarrow (I + uv^*)(I + auv^*) = I\\
+           &\rightarrow I + auv^* + uv^* + au(v^*u)v* = I \\
+           &\rightarrow (a + 1 + av^*u)uv^* = 0 \\
+           &\rightarrow a(1 + v^*u) + 1 = 0 \ or\ uv^* = 0
+\end{align*}
+
+% which indicates that $uv^* = 0$ or $(a + 1 +v^*u)=0$. 
+As been given,  $rank(u) = rank(v) = 1 > 0$,
+so the $a$ we need satisfies:
+\begin{equation}
+    \label{eq:1.1}
+    a(1 + v^*u) = -1
+\end{equation}
+
+Next we show that $v^*u \neq -1$. Suppose that $v^*u = -1$, then 
+$Au = (I + uv^*)u = u + u*(-1) =  \mathbf{0}, $ conflicting that
+$u\neq \mathbf{0}$ and $A$ is non-singular.
+
+So from \eqref{eq:1.1} we further get:
+\begin{equation}
+a = - \dfrac{1}{1+v^*u}
+\end{equation}
+
+\subsection*{The second part of proof}
+
+In this part, we show that $v^*u = -1$ is the necessary and sufficient condition
+when $A$ is singular.
+
+\subsubsection*{sufficiency}
+As been shown in the former part,
+when $v^*u = -1$,
+$Au = (I + uv^*)u = u + u*(-1) =  \mathbf{0}$,
+then $A$ is singular.
+
+\subsubsection*{necessity}
+Once $v^*u \neq -1$, according to the former part,
+we can construct a matrix $ B = I - \dfrac{1}{1+ v^*u}uv^*$
+that $AB = I$, which indicates that $A$ is non-singular.
+So we have proved the necessity.
+
+\subsubsection*{The Null Space of A}
+\begin{align*}
+    Ax &= 0 \\
+    \rightarrow (I + uv^*)x &= 0 \\
+    \rightarrow x &= - (v^*x)u \\
+    \rightarrow x & // u
+    \rightarrow Null(A) = span([u])
+\end{align*}
+
+
+
+
+

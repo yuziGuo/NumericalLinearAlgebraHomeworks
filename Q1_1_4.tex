@@ -1,0 +1,84 @@
+\section*{Question 1}
+\textcolor{blue}{[Range, Linear Mapping and Matrix]}
+Let $f_1, ..., f_8$ be a set of functions defined on the interval $[1, 8]$ 
+with the property that for any numbers $d_1, ..., d_8$, 
+there exists a set of  coefficients $c_1, ..., c_8$ such that
+ \begin{equation*}
+     \sum_{j=1}^8 c_jf_j(i) = d_i,\quad i=1, ..., 8
+ \end{equation*}
+(a) Show by appealing to the theorems of this lecture 
+that $d_1, ..., d_8$ determine $c_1, ..., c_8$ uniquely.
+\\
+(b)  Let $A$ be the $8 \times 8$ matrix representing the linear mapping 
+from data $d_1, ..., d_8$ to coefficients $c_1, ..., c_8$.
+What is the $i$, $j$ entry of $A^{-1}$ ?
+
+
+\subsection*{Answer}
+% \subsection*{Proof}
+(a). 
+For proof, we will use two theorems from APPLIED NUMERICAL
+ANALYSIS below:
+\begin{theorem}
+\label{theorem:range}
+Range($A$) is the space spanned by the columns of $A$.
+\end{theorem}
+
+\begin{theorem}
+\label{theorem:fullrank}
+A matrix $A \in \mathbb{C}^{m \times n}$ has full rank 
+if and only if maps no two distinct vectors to the same vector.
+\end{theorem}
+
+\begin{proof}
+    Denote $F = \begin{bmatrix}
+        f_1(1) & ... & f_8(1)\\
+        ...   & ... & ... \\
+        f_1(8) & ... & f_8(8)\\
+    \end{bmatrix}$.
+    We can re-write the mapping $f$ on $c_1, ..., c_8$ to 
+    $d_1, ..., d_8$ in a matrix-vector-product way:
+    \begin{equation*}
+        \label{eq:q1}
+        F
+        \begin{bmatrix}
+            c_1 \\ ... \\ c_8 \\
+        \end{bmatrix} 
+        = 
+        \begin{bmatrix}
+            d_1 \\ ... \\ d_8 
+        \end{bmatrix} .
+    \end{equation*}
+
+    Note that the value of $d_i$ can be any number, 
+    and we can view $[d_i]_{i\in[1,8]}$ to be spanned by
+    the columns of $F$, so $Range(F) = 8$. By applying 
+    Theorem \ref{theorem:range}, we get that $F$ is full-rank.
+    
+    So, $d_1, ..., d_8$ determine $c_1, ..., c_8$ uniquely.
+    Otherwise, we'll find two different vectors that map 
+    the columns of full-rank matrix $F$ to a same vector, 
+    which conflicts Theorem \ref{theorem:fullrank}. 
+    Until now We have finished sub-question (a).
+\end{proof}
+
+(b). As $F$ is full-rank, \eqref{eq:q1} can be written as:
+\begin{equation*}
+    \label{eq:q1}
+    \begin{bmatrix}
+        c_1 \\ ... \\ c_8 \\
+    \end{bmatrix} 
+    = 
+    F^{-1}
+    \begin{bmatrix}
+        d_1 \\ ... \\ d_8 
+    \end{bmatrix} .
+\end{equation*}
+
+So $A = F^{-1} \rightarrow A^{-1} = F 
+\rightarrow A^{-1}_{i,j} = F_{ij} = f_j(i)$.
+Until now We have finished sub-question (b).
+
+
+
+
