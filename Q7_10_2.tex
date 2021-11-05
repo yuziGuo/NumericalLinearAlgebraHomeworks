@@ -1,42 +1,65 @@
 \section*{Question 7}
 \textcolor{blue}{[QR Factorization with MATLAB Householder]} 
-
-(a) Write a Matlab function $[W,R] = house(A)$ that computes an implicit representation of a full QR factorization 
+% https://www.tutorialspoint.com/execute_matlab_online.php
+\\
+(a) Write a Matlab function $[W,R] = house(A)$ that computes an implicit representation 
+of a \textcolor{red}{full} QR factorization 
 $A = QR$ of an $m \times n$ matrix $A$ with $m > n$ using Householder reflections. 
 The output variables are a lower-triangular matrix $W \in \mathbb{C}^{m \times n}$ 
 whose columns are the vectors $v_k$ defining the successive Householder reflections, 
 and a triangular matrix $R \in \mathbb{C}^{n \times n}$.
-
+\\
 (b) Write a Matlab function $Q = formQ(W)$ that takes 
 the matrix $W$ produced by $house$ as input 
-and generates a corresponding $m \times m$ orthogonal matrix $Q$.
+and generates a corresponding \textcolor{red}{$m \times m$} orthogonal matrix $Q$.
 
-\subsection*{test code}
+\subsection*{Answers / Matlab Codes}
+\textcolor{blue}{[(a). Code for $house(A)$]} 
+\begin{lstlisting}[language=matlab]
+    function [W, R] = house(A)
+        [m, n] = size(A)
+        W = zeros(m, n)
+        e1 = eye(m, 1)
+        for k=1:n
+            x = A(k:m, k)
+            % We use e1_sub together with x to decide reflector,
+            % as the dimension of subspace (submatrix) is reduced in each loop,
+            % e1_sub comes shorter and shorter.
+            e1_sub = e1(1:m-k+1)
+            % Choose the better Reflector:
+            vk = sign(x(1))*norm(x,2) * e1_sub + x
+            vk = vk / norm(vk,2)
+            % HouseHolder mapping. To improve efficiency, 
+            % it's important to calculate (vk'*A(k:m,k:n) first.
+            A(k:m,k:n) = A(k:m,k:n) - 2*vk*(vk'*A(k:m,k:n)) 
+            W(k:m,k) = vk
+        end
+        R=A(1:n,:)
+    end
+\end{lstlisting}
 
-% \lstinputlisting[
-%     style       =   Matlab,
-%     caption     =   {\bf ff.m},
-%     label       =   {ff.m}
-% ]{./ff.m}
+\textcolor{blue}{[(b). Test Code for $house(A)$]} 
+% \subsection{Test codes}
 \begin{lstlisting}[language=matlab]
     m = 8
     n = 4
     x = (-m/2:m/2-1)'/(m/2)
     A = [x.^0  x.^1  x.^2 x.^3]
-    % W = house(A)
-
-    % function [W] = house(A)
-    % [m, n] = size(A)
-    W = zeros(m, n)
-    e1 = eye(m, 1)
-    for k=1:n
-        x = A(k:m, k)
-        e1_sub = e1(1:m-k+1)
-        vk = sign(x(1))*norm(x,2) * e1_sub + x
-        vk = vk / norm(vk,2)
-        A(k:m,k:n) = A(k:m,k:n) - 2*vk*(vk'*A(k:m,k:n))  % HouseHolder mapping; 
-        W(k:m,k) = vk
-    end
-
-    R=A(1:n,:)
+    W, R = house(A)
 \end{lstlisting}
+
+
+
+% function Q=form(W)
+
+% [m,n]=size(W);
+% if(m<n)
+%     error('number of rows should be bigger than that of columns of %s.', inputname(1));
+% end
+
+% Q=eye(m,m);
+% for k=n:-1:1,
+%    Q(k:m,k:m)=Q(k:m,k:m)-2*W(k:m,k)*W(k:m,k)'*Q(k:m,k:m) ;
+% end
+
+% end
