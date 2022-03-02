@@ -1,0 +1,777 @@
+%++++++++++++++++++++++++++++++++++++++++
+% Don't modify this section unless you know what you're doing!
+\documentclass[letterpaper,11pt\iffalse ,draft\fi]{article}
+% zrq
+\usepackage[utf8]{ctex}
+\usepackage{listings}
+\renewcommand{\proofname}{\it Proof}
+% zrq
+\usepackage{natbib}
+\bibliographystyle{unsrtnat}
+\usepackage{tabularx} % extra features for tabular environment
+\usepackage{amsmath}  % improve math presentation
+\usepackage{graphicx} % takes care of graphic including machinery
+\usepackage[margin=1in,letterpaper]{geometry} % decreases margins
+%\usepackage{cite} % takes care of citations
+\usepackage[final]{hyperref} % adds hyper links inside the generated pdf file
+\hypersetup{
+    colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=blue,        % color of internal links
+    citecolor=blue,        % color of links to bibliography
+    filecolor=magenta,     % color of file links
+    urlcolor=blue         
+}
+
+% additional package
+\usepackage{bm}
+\usepackage{amssymb}
+\usepackage{color}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}
+%++++++++++++++++++++++++++++++++++++++++
+
+
+\begin{document}
+
+\title{Modern Numerical Methods\\Homework \#3}
+\author{Student Name 张若琦 \quad Student ID: 2021100979}
+\date{2021/01/07}
+\maketitle
+
+
+\section*{Question 24.2}
+
+\subsection*{Answer of (a)}
+\begin{proof}
+For any $\lambda\in \Lambda(A)$, we select a corresponding eigenvector $x\in E_{\lambda}$, s.t. $\max{x_i}=1$.
+
+Since $Ax = \lambda x$, i.e. for all $i=1,\dots,m$, $\sum_{j} a_{ij}x_j = \lambda x_i$. Assume $x_i=1$, we have $$
+|\lambda-a_{ii}|=|\lambda x_i-a_{ii}x_i| = |\sum_{j\neq i} a_{ij}x_j| \leq \sum_{j\neq i} |a_{ij}|
+$$
+
+Thus $\lambda\in \bar{B}(a_{ii}, \sum_{j\neq i} |a_{ij}|)$. Every eigenvalue lies in at least one of the m circular disks. 
+\end{proof}
+
+
+\subsection*{Answer of (b)}
+\begin{proof}
+Without loss of generality, we assume that the first $n$ disks are connected.
+
+Let $D = \diag\{a_{11},\cdots,a_{mm}\}$ and $B=A-D$. Let matrix function $A(\epsilon) = D+\epsilon B$, $\epsilon\in[0,1]$. Because the root of a polynomial varies continuously respect to the coefficient, and the coefficients of the characteristic polynomial $det(A(\epsilon)-\lambda I)$ varies continuously respect to $\epsilon$, the eigenvectors $\lambda_i(\epsilon)$ are continuous functions of $\epsilon$.
+
+When $\epsilon=0$, the radius of all the circles are 0, since each eigenvalue $\lambda_i=a_{ii}$ has a corresponding eigenvector $e_i$ (the i-th dim is 1 and 0 otherwise), it belongs to the i-th circle.
+
+As $\epsilon$ increases to 1, the i-th ($i\leq n$) eigenvalue varies continuously and are always within the area of the connected component, i.e. $\bigcup_{i=1}^n \bar{B_i}$. For the same reason, i-th ($i>n$) eigenvalue is always apart from the connected component. Therefore, the component has exactly n eigenvalues.
+\end{proof}
+
+
+\subsection*{Answer of (c)}
+\begin{proof}
+Applying the above theorem, $r_1=|a_{12}|+|a_{13}|=1$, $r_2=|a_{21}|+|a_{23}|=1+\epsilon$, $r_3=|a_{31}|+|a_{32}|=\epsilon$
+
+The three circles are $$\begin{aligned}
+\bar{B}(8,1) &= \{x| \ |x-8|\leq 1\} \\
+\bar{B}(4,1+|\epsilon|) &= \{x| \ |x-4|\leq 1+|\epsilon|\} \\
+\bar{B}(1,|\epsilon|) &= \{x| \ |x-1|\leq |\epsilon|\} \\
+\end{aligned}$$
+
+Since all the circles are disconnected, each circle has exactly one eigenvalue.
+\end{proof}
+
+
+\subsection*{Answer of (d)}
+\begin{proof}
+We can get the circle $\{x| \ |x-1|\leq \epsilon^2\}$ by making $|a_{31}|+|a_{32}|=\epsilon^2$ while maintaining $|a_{33}|=1$
+
+Let $P=\begin{pmatrix}
+1 \\ & 1 \\ & & \epsilon
+\end{pmatrix}$, then $C=PAP^{-1}=\begin{pmatrix}
+8 & 1 \\ 1 & 4 & 1 \\  & \epsilon^2 & 1
+\end{pmatrix}$. The C and A are similar thus have the same eigenvalues. At this time, $r_2=2, r_3=\epsilon^2$, the three circles are still disconnected. Thus we get the tighter bound $\{x| \ |x-1|\leq \epsilon^2\}$.
+\end{proof}
+
+\newpage
+
+\section*{Question 25.3}
+
+\subsection*{Answer of (a)}
+\begin{proof}
+The first matrix can be obtained by (ii). We can introduce zeros to A[k:n,k] by applying householder reflectors on the left and to A[k,k:n] by applying on the right. By applying Givens rotations on the left, we can introduce zeros from left to right and from bottom up. By applying on the right, we can introduce zeros to the right upper corner.
+
+So we can get $P=\begin{pmatrix}
+x & x & 0 \\ x & x & x \\ x & x & x
+\end{pmatrix}$ by applying Givens rotations on the right. And then get $P=\begin{pmatrix}
+x & x & 0 \\ 0 & x & x \\ 0 & 0 & x
+\end{pmatrix}$ by applying two times of householder reflectors on the left.
+\end{proof}
+
+
+\subsection*{Answer of (b)}
+\begin{proof}
+The second matrix can be obtained by (ii). 
+
+Firstly, we apply Givens rotations on the right and get $\begin{pmatrix}
+x & x & 0 \\ x & x & x \\ x & x & x
+\end{pmatrix}$
+
+Secondly, we apply Givens rotations on the left and get $\begin{pmatrix}
+x & x & 0 \\ x & x & x \\ 0 & x & x
+\end{pmatrix}$
+
+Then, we apply $\begin{pmatrix}
+1 \\  &  & 1 \\  & 1 & 
+\end{pmatrix}$ to both left and right to exchange the 2nd row with 3rd row and 2nd column with 3rd column and get
+$\begin{pmatrix}
+x & x & 0 \\ x & 0 & x \\ x & x & x
+\end{pmatrix}$
+
+Finally,  we apply Givens rotations on the left and get $\begin{pmatrix}
+x & x & 0 \\ x & 0 & x \\ 0 & x & x
+\end{pmatrix}$
+\end{proof}
+
+
+\subsection*{Answer of (c)}
+\begin{proof}
+This matrix is singular, i.e. $det(C)=0$. So it can not be obtained by a sequence of unitary matrices since they won't change the determinant of the matrix.
+
+\end{proof}
+
+
+\newpage
+
+
+\section*{Question 26.2}
+
+\subsection*{Answer of (a)}
+\begin{proof}
+
+We adapt the definition of $\epsilon$-pseudospectrum $$\begin{aligned}
+\sigma_{\epsilon}(A) &= \{\lambda |\ |(A-\lambda I)^{-1}|> 1/\epsilon \} \\
+&= \bigcup_{|E|<\epsilon} \sigma(A+E)
+\end{aligned}$$
+
+For each $\epsilon=0.1,0.01,\dots,10^{-9}$, we generate 100 random matrix that $\epsilon/10<|E|<\epsilon$ and compute the eigenvalues of $A+E$. The results in complex plane are presented in the following figure.
+
+\begin{figure}[htb] \centering 
+    \includegraphics[scale=0.4]{3(a).png}
+    \caption{pseudospectrum}
+    \end{figure}
+    
+The contour of the graphic becomes more clear as $\epsilon$ decays. The eigenvalues becomes closer to that of $A$.\end{proof}
+
+
+\subsection*{Answer of (b)}
+\begin{proof}
+
+The curve grows fast initially. The gradient $\frac {d \ln y}{d x}$ in log-plot of axis y is about 1000.
+
+\begin{figure}[htb] \centering 
+    \includegraphics[scale=0.35]{3(b).png}
+    \caption{|e^{tA}| for\ t=0,..,50}
+    \end{figure}  \end{proof}
+
+
+Here is the code for (a)
+
+\begin{lstlisting}
+import numpy as np
+import matplotlib.pyplot as plt
+
+n = 257
+N = n*2+2
+h = np.zeros((N,N))
+
+m = 32
+A = np.zeros((m,m))
+for i in range(m):
+    A[i][i] = -1
+    if i<m-1:
+        A[i][i+1]=1
+    if i<m-2:
+        A[i][i+2]=1
+
+X = [[] for x in range(10)]
+Y = [[] for x in range(10)]
+
+for t in range(1000):
+    k = t//100
+    E = np.random.randn(m, m) / (m**0.5)
+    E_norm=np.linalg.norm(E, ord=2)
+    H = int(-np.log10(E_norm))
+
+    E = E*(10.**-(k-H))
+    E_norm=np.linalg.norm(E, ord=2)
+    print(int(-np.log10(E_norm)), k-H)
+    H = k
+
+    AE = A+E
+    value, P = np.linalg.eig(AE)
+    for e in value:
+        x,y = e.real, e.imag
+        X[H].append(x)
+        Y[H].append(y)
+        x = int((x+1.5)*256/3)
+        y = int((y+1.5)*256/3)
+
+for i in range(9):
+    plt.subplot(331+i)
+    plt.scatter(X[i], Y[i], alpha=0.5, s=0.8)
+plt.show()
+\end{lstlisting}
+
+Code for (b)
+
+\begin{lstlisting}
+import numpy as np
+import matplotlib.pyplot as plt
+import scipy.linalg
+
+m = 32
+A = np.zeros((m,m))
+for i in range(m):
+    A[i][i] = -1
+    if i<m-1:
+        A[i][i+1]=1
+    if i<m-2:
+        A[i][i+2]=1
+
+X = list(range(51))
+Y = list(range(51))
+
+for t in range(51):
+    B = A * t
+    C = scipy.linalg.expm(B)
+    Y[t] = np.linalg.norm(C, ord=2)
+
+fig, ax = plt.subplots() 
+ax.semilogy(X, Y)
+plt.show()
+\end{lstlisting}
+
+\newpage
+
+\section*{Question 27.2}
+
+\subsection*{Answer of (a)}
+\begin{proof}
+Assume the eigenvalues of A are $\lambda_i$, the corresponding unit norm eigenvectors are $x_i$, so $|x_i|=1$.
+
+Since $$
+r(x_i) = \frac {x_i^TAx_i}{x_i^Tx_i} = \frac {x_i^T\lambda_i x_i}{x_i^Tx_i} = \lambda_i$$
+, we have $\lambda_i\in W(A), \forall i$
+
+To show that W(A) contains the convex hull of $\{\lambda_i\}$, we still need to show that for any $\lambda_i\neq \lambda_j$, for any $\alpha>0,\beta>0 \ s.t. \ \alpha+\beta=1$, $\alpha\lambda_i +\beta\lambda_j \in W(A)$. Next, we are going to find such $x$ that $r(x) = \alpha\lambda_i +\beta\lambda_j$.
+
+Assume $x=px_i+qx_j$ and $|x|=1$, let $c=x_i^Tx_j$. We have $$
+r(x) = (px_i+qx_j)^T(p\lambda_i x_i+q\lambda_j x_j) = (p^2+pqc)\lambda_i + (q^2+pqc)\lambda_j
+$$
+if there exists such p,q that $$\begin{cases}
+p^2+pqc = \alpha \quad \eqno{(1)}\\
+q^2+pqc = \beta \quad \eqno{(2)}
+\end{cases}$$
+then the proof will be completed.
+
+To Solve the above equations, let $t=q/p$, and from $(2)-(1)*\frac{\beta}{\alpha}$, we get $$t^2+\frac {\alpha-\beta}{\alpha}ct -\frac{\beta}{\alpha}=0$$
+
+It has two different roots, we can learn $t=q/p$ from the above equation. Again, by using the constraint $p^2+q^2+2pqc=1$, we can get the value of p and q.
+
+Therefore we have found the $x$ in need.
+
+\end{proof}
+
+
+\subsection*{Answer of (b)}
+\begin{proof}
+If A is normal, it will have m orthogonal eigenvectors, denoted by $x_1,\cdots,x_m$. Then any vector $x\in \mathbb{C}^m$ can be expressed as a linear combination of $x_1,\cdots,x_m$, denoted by $x = \sum_{i=1}^m a_ix_i$. So we have $$
+\frac {x^TAx}{x^Tx} = \frac {\sum_{i=1}^m a_i^2\lambda_i}{\sum_{i=1}^m a_i^2} = \sum_{i=1}^m \frac { a_i^2}{\sum_{i=1}^m a_i^2}\cdot \lambda_i
+$$
+which belongs to the convex hull. Therefore W(A) is equal to the above convex hull.
+
+\end{proof}
+
+
+\newpage
+
+\section*{Question 29.1}
+
+\subsection*{Answer of (a)}
+\begin{proof}
+
+We use Lanczos iteration to tridiag A.
+
+\begin{lstlisting}
+function [T] = tridiag(A)
+    [m,n] = size(A);
+    T = zeros(m,m);
+    beta = 0.;
+    q_pre = zeros(m,1);
+    q_now = rand(m,1);
+    q_now = q_now / norm(q_now, 2);
+    for i = 1:m
+        v = A * q_now;
+        alpha = q_now' * v;
+        v = v - beta*q_pre - alpha*q_now;
+        beta = norm(v,2);
+        q_pre = q_now;
+        q_now = v / beta;
+        T(i,i) = alpha;
+        if i<m
+            T(i+1,i) = beta;
+            T(i,i+1) = beta;
+        end
+    end
+end
+\end{lstlisting} \end{proof}
+
+
+\subsection*{Answer of (b)}
+\begin{proof}
+
+\begin{lstlisting}
+function [Tnew] = qralg(T)
+    [m,n] = size(T);
+    Tnew = T;
+    while (abs(Tnew(m,m-1))>1e-12)
+       [Q,R] = qr(Tnew);
+       Tnew = R*Q;
+    end
+end
+\end{lstlisting}
+
+\end{proof}
+
+
+\subsection*{Answer of (c)}
+\begin{proof}
+
+We let 'A=hilb(4)', and then run the driver 'eigvalue=driver(A)'. Finally, we get the answer:
+
+\begin{lstlisting}
+eigvalue =
+    0.0001    0.0067    0.1691    1.5002
+\end{lstlisting}
+
+\\
+
+We plot $|t_{m,m-1}|$ here.
+\begin{figure}[htb] \centering 
+    \includegraphics[scale=0.3]{5(3).png}
+    \caption{|t_{m,m-1}|}
+    \end{figure}
+
+
+\begin{lstlisting}
+function [eigvalue] = driver(A)
+    [m,n] = size(A);
+    eigvalue = zeros(1,m);
+    T = tridiag(A);
+    Y = [];
+    for i=m:-1:2
+        [Tnew,tmp] = qralg(T);
+        %Y(1, m+1-i) = abs(Tnew(i,i-1));
+        Y = [Y, tmp];
+        eigvalue(1, m+1-i) = Tnew(i,i);
+        T = Tnew(1:i-1,1:i-1);
+    end
+    eigvalue(1,m) = Tnew(1,1);
+    
+    X = 1:max(size(Y));
+    figure
+    semilogy(X,Y);
+end
+\end{lstlisting}
+
+\end{proof}
+
+
+\subsection*{Answer of (d)}
+\begin{proof}
+
+We do the same like in (c) and get the answer:
+\begin{lstlisting}
+eigvalue =
+    0.0001    0.0067    0.1691    1.5002
+\end{lstlisting}
+
+We plot $|t_{m,m-1}|$ here.
+\begin{figure}[htb] \centering 
+    \includegraphics[scale=0.3]{5(4).png}
+    \caption{|t_{m,m-1}|}
+    \end{figure}
+    
+Here is the code for shifted QR.
+
+\begin{lstlisting}
+function [Tnew, t] = new_qralg(T)
+    [m,n] = size(T);
+    Tnew = T;
+    I = eye(m);
+    t = [abs(Tnew(m,m-1))];
+    while (abs(Tnew(m,m-1))>1e-12)
+        [a,b,c] = deal(Tnew(m-1,m-1), Tnew(m,m), Tnew(m-1,m));
+        delta = (a - b) / 2;
+        mu = b - sign(delta) * c^2 / (abs(delta) + sqrt(delta^2 + c^2));
+        [Q,R] = qr(Tnew-mu*I);
+        Tnew = R*Q+mu*I;
+       t = [t,abs(Tnew(m,m-1))];
+    end
+end
+\end{lstlisting}
+
+ 
+\end{proof}
+
+\subsection*{Answer of (e)}
+\begin{proof}
+
+We let $A = diag(15:-1:1) + ones(15,15)$, and rerun the two programs.
+
+No shift:
+
+\begin{lstlisting}
+eigvalue =
+  1 至 13 列
+    4.3143    6.3629    5.3390    7.3871    8.4121    9.4387   10.4679   11.5010    3.2878   12.5402    2.2570   13.5901   14.6641
+  14 至 15 列
+    1.2147   24.2231
+\end{lstlisting}
+
+\begin{figure}[htb] \centering 
+    \includegraphics[scale=0.3]{5(5)(1).png}
+    \caption{|t_{m,m-1}|}
+    \end{figure}
+    
+
+Shifted:
+
+\begin{lstlisting}
+eigvalue =
+  1 至 13 列
+    1.2147    2.2570    3.2878    4.3143    5.3390    6.3629    7.3871    8.4121    9.4387   10.4679   11.5010   12.5402   13.5901
+  14 至 15 列
+   14.6641   24.2231
+\end{lstlisting}
+
+\begin{figure}[htb] \centering 
+    \includegraphics[scale=0.3]{5(5)(2).png}
+    \caption|{t_{m,m-1}|}
+    \end{figure}
+    
+The convergence is quadratic. The numbers of iterations used to converge for each eigenvalue are almost the same.
+
+\end{proof}
+
+\newpage
+
+\section*{Question 32.2}
+
+\subsection*{Answer of (a)}
+\begin{proof}
+Number of matrix additions: 4 \\
+Number of matrix multiplications: 8 \\
+\end{proof}
+
+
+\subsection*{Answer of (b)}
+\begin{proof}
+Number of matrix additions: 12 \\
+Number of matrix deletions: 6 \\
+Number of matrix multiplications: 7 \\
+\end{proof}
+
+
+\subsection*{Answer of (c)}
+\begin{proof}
+According to the analysis above, we have $$T(n) = 7T(n/2) + 18n^2$$
+
+By applying the Main Theorem, we have $T(n) = O(m^{\log_2 7})$
+\end{proof}
+
+
+\subsection*{Answer of (d)}
+\begin{proof}
+
+We generate a random matrix of 1000x1000, which is big enough to carry this test. By comparing the time of Strassen algorithm (executable: test) to the naive version (bf, abbr. for brute-force), we can get the following result,
+
+\begin{figure}[htb] \centering 
+    \includegraphics[scale=0.4]{6(4).png}
+    \caption{experimental result}
+    \end{figure}
+
+The Strassen algorithm is about 2$\sim$3 times faster than the naive one.
+
+We implement the algorithm in c++. Here is the code of the main part.
+
+\begin{lstlisting}[language=C++]
+    void mul(int N, int * A, int * B) // A = A * B
+    {
+        if (N == 1) {
+            A[0] *= B[0];
+            return;
+        }
+        int n = N >> 1, n2 = n * n;
+        int *C0 = new int[n2],
+            *C1 = new int[n2],
+            *C2 = new int[n2],
+            *C3 = new int[n2],
+            *C4 = new int[n2];
+        // m7
+        rep0(i,0,n) rep0(j,0,n)
+            C3[i * n + j] = A(i+n, j) - A(i, j),
+            C1[i * n + j] = B(i, j) + B(i, j+n);
+        mul(n, C3, C1);
+    //  cout << C3[0] << endl;
+        // m6
+        rep0(i,0,n) rep0(j,0,n)
+            C0[i * n + j] = A(i, j+n) - A(i+n, j+n),
+            C1[i * n + j] = B(i+n, j) + B(i+n, j+n);
+        mul(n, C0, C1);
+    //  cout << C0[0] << endl;
+        // m5
+        rep0(i,0,n) rep0(j,0,n)
+            C2[i * n + j] = A(i, j) + A(i+n, j+n),
+            C1[i * n + j] = B(i, j) + B(i+n, j+n);
+        mul(n, C2, C1);
+    //  cout << C2[0] << endl;
+        rep0(i,0,n2)
+            C0[i] += C2[i],
+            C3[i] += C2[i];
+        // m4
+        rep0(i,0,n) rep0(j,0,n)
+            C2[i * n + j] = A(i+n, j+n),
+            C1[i * n + j] = B(i+n, j) - B(i, j);
+        mul(n, C2, C1);
+    //  cout << C2[0] << endl;
+        rep0(i,0,n2) C0[i] += C2[i];
+        // m3
+        rep0(i,0,n) rep0(j,0,n)
+            C4[i * n + j] = A(i+n, j) + A(i+n, j+n),
+            C1[i * n + j] = B(i, j);
+        mul(n, C4, C1);
+    //  cout << C4[0] << endl;
+        rep0(i,0,n2)
+            C2[i] += C4[i],
+            C3[i] -= C4[i];
+        // m2
+        rep0(i,0,n) rep0(j,0,n)
+            C1[i * n + j] = A(i, j) + A(i, j+n),
+            C4[i * n + j] = B(i+n, j+n);
+        mul(n, C1, C4);
+    //  cout << C1[0] << endl;
+        rep0(i,0,n2) C0[i] -= C1[i];
+        // copy C2
+        rep0(i,0,n) rep0(j,0,n)
+            A(i+n, j) = C2[i * n + j];
+        // m1
+        rep0(i,0,n) rep0(j,0,n)
+            C2[i * n + j] = A(i, j),
+            C4[i * n + j] = B(i, j+n) - B(i+n, j+n);
+        mul(n, C2, C4);
+    //  cout << C2[0] << endl;
+        // copy C3, C1, C0
+        rep0(i,0,n) rep0(j,0,n)
+            A(i+n, j+n) = C3[i * n + j] + C2[i * n + j],
+            A(i, j+n) = C1[i * n + j] + C2[i * n + j],
+            A(i, j) = C0[i * n + j];
+        
+        delete [] C0;
+        delete [] C1;
+        delete [] C2;
+        delete [] C3;
+        delete [] C4;
+    }
+    
+    int main() {
+        int n = get_int();
+        int *A = new int[n*n], *B = new int[n*n];
+        rep0(i,0,n) rep0(j,0,n) A[i * n + j] = get_int();
+        rep0(i,0,n) rep0(j,0,n) B[i * n + j] = get_int();
+        mul(n, A, B);
+        // rep0(i,0,n) {
+        //  rep0(j,0,n)  printf("%d ", A[i * n + j]);
+        //  printf("\n");
+        // }
+        delete [] A;
+        delete [] B;
+        cout << clock() << endl;
+    }
+\end{lstlisting}
+
+\end{proof}
+
+\newpage
+
+\section*{Question 35.4}
+
+\subsection*{Answer of (a)}
+\begin{proof}
+Since $A=QR$, where $R=P_{n-1}\cdots P_1, Q=Q_1\cdots Q_{n-1}$ are unitary matrices, we know that $Ax=b$ is equivalent to $Rx = Q^{-1}b$. Each step of $Q_ix$ costs O(n) and there are n steps in total, so it takes $O(n^2)$ to compute $Q^{-1}b$. Because $R$ is triangular, the computation of $Rx = y$ is also $O(n^2)$. Therefore, the complexity is $O(n^2)$.
+\end{proof}
+
+
+\subsection*{Answer of (b)}
+\begin{proof}
+\end{proof}
+
+
+\newpage
+
+\section*{Question 36.3}
+
+\subsection*{Answer}
+\begin{proof}
+
+The smallest eigenvalue of A is -0.300963
+
+The code is implemented in python, and we present the main part (Lanczos iteration) here. \\
+
+
+\begin{lstlisting}
+m = 1000
+A = np.zeros((m,m))
+for i in range(m):
+    A[i][i] = (i+1)**.5
+    if i:
+        A[i][i-1] = A[i-1][i] = 1
+    if i>=100:
+        A[i][i-100] = A[i-100][i] = 1
+        
+ans = np.zeros((m,m))
+beta = 0.
+q_pre = np.zeros(m)
+q_now = np.random.rand(m)
+q_now /= np.linalg.norm(q_now, ord=2)
+for i in range(m):
+    v = np.dot(A, q_now)
+    alpha = np.dot(q_now.T, v)
+    v -= beta*q_pre + alpha*q_now
+    beta = np.linalg.norm(v, ord=2)
+    q_pre = q_now
+    q_now = v / beta
+
+    ans[i][i] = alpha
+    if i<m-1:
+        ans[i+1][i] = ans[i][i+1] = beta
+\end{lstlisting}
+
+\end{proof}
+
+\newpage
+
+\section*{Question 38.6}
+
+\subsection*{Answer}
+\begin{proof}
+
+Steepest Descent: if A is positive definite, then the solution of $Ax=b$ can be viewed as the minimizer of $$\min_{x} f(x)=\frac 12x^TAx-b^Tx$$
+The minimum is achieved when $\nabla f(x)=Ax-b=0$, so we can apply Gradient descent to compute $x$.
+
+At each step, the steepest direction is $-\nabla f(x)=b-Ax_k$, which is exactly the residual $r_k$. The learning rate $\alpha_k$ is set to be $$\alpha_k =  \arg\min_{\alpha>0} f(x_k+\alpha r_k) = 
+\frac {r_k^Tr_k}{r_k^TAr_k}$$
+
+More specifically, following the CG algorithm, we set $x_0=0$.
+
+In CG algorithm, the answer finally converges, so we take x in the last step as $x^*$ and use it to compute $|e|_A$. According to Theorem 38.5, we take $|e_n|_A / |e_0|_A$ as a lower bound of $2(\frac {\sqrt{\kappa}-1}{\sqrt{\kappa}+1})^n$.
+
+The 4 curves are shown in the following figure. The actual residual of CG is always smaller than the estimated residual, and they both converge to 0, together with the bound estimated. Compared to Steepest Descent, CG converges more quickly.
+
+\begin{figure}[htb] \centering 
+    \includegraphics[scale=0.5]{9.png}
+    \caption{result}
+    \end{figure}
+    
+The code is implemented in python, we present the main part in the following.
+
+
+\begin{lstlisting}
+m = 100
+A = np.zeros((m,m))
+b = np.ones(m)
+for i in range(m):
+    A[i][i] = i+1
+    if i:
+        A[i][i-1]=A[i-1][i]=1
+
+
+def normA(x):
+    global A
+    return (np.dot(x.T, np.dot(A,x))) ** .5
+
+cg_residual_estimate = [0 for x in range(m)]
+cg_residual_actual   = [0 for x in range(m)]
+gd_residual          = [0 for x in range(m)]
+cg_bound             = [0 for x in range(m)]
+
+# CG
+X = np.zeros((m,m))
+x = np.zeros(m)
+r = np.array(b)
+p = np.array(r)
+for i in range(m):
+    alpha = np.dot(r.T, r.T) / np.dot(p.T, np.dot(A,p))
+    x += alpha * p
+    X[i] = x.copy()
+    r_old = r.copy()
+    r -= alpha * np.dot(A,p)
+    beta = np.dot(r.T,r) / np.dot(r_old.T,r_old)
+    p = r + beta*p
+
+    cg_residual_estimate[i] = np.linalg.norm(p,ord=2)
+    cg_residual_actual[i] = np.linalg.norm(b-np.dot(A,x),ord=2)
+
+norm_e0 = normA(X[m-1]) # x*-x0 = xm-1 - 0
+for i in range(m):
+    e = X[m-1] - X[i]
+    cg_bound[i] = normA(e) / norm_e0
+
+# GD
+x = np.zeros(m)
+for i in range(m):
+    r = b-np.dot(A,x)
+    alpha = np.dot(r.T,r) / np.dot(r.T,np.dot(A,r))
+    x += alpha*r
+    gd_residual[i] = np.linalg.norm(r,ord=2)
+
+x_axis = [x+1 for x in range(m)]
+plt.plot(x_axis, cg_residual_estimate, c='g',label='cg_residual_estimate')
+plt.plot(x_axis, cg_residual_actual, c='r',label='cg_residual_actual')
+plt.plot(x_axis, gd_residual, c='b',label='gd_residual')
+plt.plot(x_axis, cg_bound, c='orange',label='cg_bound')
+plt.legend()
+plt.show()
+\end{lstlisting}
+
+\end{proof}
+
+
+\newpage
+
+\section*{Question 39.1}
+
+\subsection*{Answer of (a)}
+\begin{proof}
+
+Since $AA^*=I$, the singular values of A are all 1. According to Theorem 38.4, CG iteration converges in 1 step.
+
+\end{proof}
+
+
+\subsection*{Answer of (b)}
+\begin{proof}
+\end{proof}
+
+
+\subsection*{Answer of (c)}
+\begin{proof}
+\end{proof}
+
+
+
+
+
+\bibliography{refs}
+
+\end{document}

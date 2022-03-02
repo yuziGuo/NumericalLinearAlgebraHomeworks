@@ -1,8 +1,0 @@
-\section*{Question 8}
-\textcolor{blue}{[MATLAB]}
-
-11.3. Take m = 50, n = 12. Using Matlab's linspace, define t to be the m-vector corresponding to linearly spaced grid points from 0 to 1. Using Matlab's vander and fliplr, define A to be the m x n matrix associated with least squares fitting on this grid by a polynomial of degree n — 1. Take b to be the function cos(4t) evaluated on the grid. Now, calculate and print (to sixteen-digit precision) the least squares coefficient vector x by six methods: (a) Formation and solution of the normal equations, using Matlab's \, (b) QR factorization computed by mgs (modified Gram-Schmidt, Exercise 8.2), (c) QR factorization computed by house (Householder triangularization, Exercise 10.2),
-(d) QR factorization computed by Matlab's qr (also Householder triangu-larization),
-(e) x = A\b in Matlab (also based on QR factorization),
-(f) SVD, using Matlab's svd.
-(g) The calculations above will produce six lists of twelve coefficients. In each list, shade with red pen the digits that appear to be wrong (affected by rounding error). Comment on what differences you observe. Do the normal equations exhibit instability? You do not have to explain your observations.

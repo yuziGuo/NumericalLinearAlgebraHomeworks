@@ -1,4 +1,4 @@
-function [W, R] = house(A)
+function [W, A] = house(A)
     [m, n] = size(A)
     W = zeros(m, n)
     e1 = eye(m, 1)

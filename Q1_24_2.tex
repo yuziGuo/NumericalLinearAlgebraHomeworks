@@ -1,0 +1,52 @@
+\section*{Question 24.2}
+
+\subsection*{Answer of (a)}
+\begin{proof}
+For any $\lambda\in \Lambda(A)$, we select a corresponding eigenvector $x\in E_{\lambda}$, s.t. $\max{x_i}=1$.
+
+Since $Ax = \lambda x$, i.e. for all $i=1,\dots,m$, $\sum_{j} a_{ij}x_j = \lambda x_i$. Assume $x_i=1$, we have $$
+|\lambda-a_{ii}|=|\lambda x_i-a_{ii}x_i| = |\sum_{j\neq i} a_{ij}x_j| \leq \sum_{j\neq i} |a_{ij}|
+$$
+
+Thus $\lambda\in \bar{B}(a_{ii}, \sum_{j\neq i} |a_{ij}|)$. Every eigenvalue lies in at least one of the m circular disks. 
+\end{proof}
+
+
+\subsection*{Answer of (b)}
+\begin{proof}
+Without loss of generality, we assume that the first $n$ disks are connected.
+
+Let $D = diag\{a_{11},\cdots,a_{mm}\}$ and $B=A-D$. Let matrix function $A(\epsilon) = D+\epsilon B$, $\epsilon\in[0,1]$. Because the root of a polynomial varies continuously respect to the coefficient, and the coefficients of the characteristic polynomial $det(A(\epsilon)-\lambda I)$ varies continuously respect to $\epsilon$, the eigenvectors $\lambda_i(\epsilon)$ are continuous functions of $\epsilon$.
+
+When $\epsilon=0$, the radius of all the circles are 0, since each eigenvalue $\lambda_i=a_{ii}$ has a corresponding eigenvector $e_i$ (the i-th dim is 1 and 0 otherwise), it belongs to the i-th circle.
+
+As $\epsilon$ increases to 1, the i-th ($i\leq n$) eigenvalue varies continuously and are always within the area of the connected component, i.e. $\bigcup_{i=1}^n \bar{B_i}$. For the same reason, i-th ($i>n$) eigenvalue is always apart from the connected component. Therefore, the component has exactly n eigenvalues.
+\end{proof}
+
+
+\subsection*{Answer of (c)}
+\begin{proof}
+Applying the above theorem, $r_1=|a_{12}|+|a_{13}|=1$, $r_2=|a_{21}|+|a_{23}|=1+\epsilon$, $r_3=|a_{31}|+|a_{32}|=\epsilon$
+
+The three circles are $$\begin{aligned}
+\bar{B}(8,1) &= \{x| \ |x-8|\leq 1\} \\
+\bar{B}(4,1+|\epsilon|) &= \{x| \ |x-4|\leq 1+|\epsilon|\} \\
+\bar{B}(1,|\epsilon|) &= \{x| \ |x-1|\leq |\epsilon|\} \\
+\end{aligned}$$
+
+Since all the circles are disconnected, each circle has exactly one eigenvalue.
+\end{proof}
+
+
+\subsection*{Answer of (d)}
+\begin{proof}
+We can get the circle $\{x| \ |x-1|\leq \epsilon^2\}$ by making $|a_{31}|+|a_{32}|=\epsilon^2$ while maintaining $|a_{33}|=1$
+
+Let $P=\begin{pmatrix}
+1 \\ & 1 \\ & & \epsilon
+\end{pmatrix}$, then $C=PAP^{-1}=\begin{pmatrix}
+8 & 1 \\ 1 & 4 & 1 \\  & \epsilon^2 & 1
+\end{pmatrix}$. The C and A are similar thus have the same eigenvalues. At this time, $r_2=2, r_3=\epsilon^2$, the three circles are still disconnected. Thus we get the tighter bound $\{x| \ |x-1|\leq \epsilon^2\}$.
+\end{proof}
+
+\newpage
